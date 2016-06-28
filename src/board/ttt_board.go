@@ -25,10 +25,35 @@ func (t TttBoard) CurrentDepth() int {
 	return depth
 }
 
-func (t TttBoard) GetSpaces() []int {
+func (t TttBoard) PossibleMoves() []int {
+	var moves []int
+	for i, v := range t.spaces {
+		if v == 0 {
+			moves = append(moves, i+1)
+		}
+	}
+	return moves
+}
+
+func (t TttBoard) Spaces() []int {
 	return t.spaces
 }
 
 func (t *TttBoard) SetSpaces(spaces []int) {
 	t.spaces = spaces
+}
+
+func (t TttBoard) WhoseTurn() int {
+	spaces := t.spaces
+
+	total := 0
+
+	for i := range spaces {
+		total += spaces[i]
+	}
+
+	if total == 0 {
+		return 1
+	}
+	return -1
 }
