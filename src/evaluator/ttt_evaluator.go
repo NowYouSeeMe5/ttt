@@ -8,7 +8,9 @@ const (
 	E  = 0
 )
 
-func Winner(spaces []int) int {
+type TttEvaluator struct{}
+
+func (t TttEvaluator) Winner(spaces []int) int {
 	size := size(spaces)
 
 	verticalWinner := verticalWinner(size, spaces)
@@ -35,7 +37,8 @@ func verticalWinner(size int, spaces []int) int {
 
 	for column := 0; column < size; column++ {
 		verticalScore := 0
-		for row := column; row <= column+size*(size-1); row += size {
+		lastIndexInColumn := column + (size * (size - 1))
+		for row := column; row <= lastIndexInColumn; row += size {
 			verticalScore += spaces[row]
 		}
 
@@ -48,8 +51,8 @@ func verticalWinner(size int, spaces []int) int {
 
 func horizontalWinner(size int, spaces []int) int {
 	winner := E
-
-	for row := 0; row <= size*(size-1); row += size {
+	lastIndex := size * (size - 1)
+	for row := 0; row <= lastIndex; row += size {
 		rowScore := 0
 		for column := row; column < row+size; column++ {
 			rowScore += spaces[column]
@@ -66,13 +69,11 @@ func diagonalLeftRightWinner(size int, spaces []int) int {
 	winner := E
 
 	diagonalScore := 0
-	for i := 0; i < size*size; i += size + 1 {
+	for i := 0; i < size*size; i += (size + 1) {
 		diagonalScore += spaces[i]
 	}
 
-	if float64(size) == math.Abs(float64(diagonalScore)) {
-		winner = diagonalScore / size
-	}
+	winner = checkForWinner(size, diagonalScore)
 
 	return winner
 }
@@ -81,12 +82,20 @@ func diagonalRightLeftWinner(size int, spaces []int) int {
 	winner := E
 
 	diagonalScore := 0
-	for i := size - 1; i <= size*3; i += (size - 1) {
+	for i := size - 1; i <= size*size-(size-1); i += (size - 1) {
 		diagonalScore += spaces[i]
 	}
 
-	if float64(size) == math.Abs(float64(diagonalScore)) {
-		winner = diagonalScore / size
+	winner = checkForWinner(size, diagonalScore)
+
+	return winner
+}
+
+func checkForWinner(size int, score int) int {
+	winner := E
+
+	if float64(size) == math.Abs(float64(score)) {
+		winner = score / size
 	}
 
 	return winner
