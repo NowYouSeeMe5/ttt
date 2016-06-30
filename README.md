@@ -1,17 +1,16 @@
 # ttt
 tic-tac-toe implemented in the style of Go
 
-Let me apologize in advance for the following steps. Welcome to Go.
+Let me apologize in advance for the following steps, welcome to Go.
 
 Go Instructions:
 
+  Homebrew is the easiest way to install go: `brew install go`
+
   If you already have a workspace setup you can clone the project and skip these steps.
 
-  It you don't have go there are several setup steps, this should work with a copy paste:
+  It you don't have go there are several setup steps, this should work with a copy paste once you have go:
   
-  Homebrew is the easiest way to install go: `brew install go`
-  
-  You have to set up a workspace using the following:
   ```
     mkdir ~/Desktop/go
     mkdir ~/Desktop/go/bin
