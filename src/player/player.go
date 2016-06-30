@@ -1,9 +1,9 @@
 package player
 
 import (
-	. "ttt/src/board"
+	"ttt/src/board"
 )
 
 type Player interface {
-	Move(board Board) int
+	Move(board board.Board) int
 }

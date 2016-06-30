@@ -42,8 +42,9 @@ func verticalWinner(size int, spaces []int) int {
 			verticalScore += spaces[row]
 		}
 
-		if float64(size) == math.Abs(float64(verticalScore)) {
-			winner = verticalScore / size
+		winner = checkForWinner(size, verticalScore)
+		if winner != 0 {
+			return winner
 		}
 	}
 	return winner
@@ -51,6 +52,7 @@ func verticalWinner(size int, spaces []int) int {
 
 func horizontalWinner(size int, spaces []int) int {
 	winner := E
+
 	lastIndex := size * (size - 1)
 	for row := 0; row <= lastIndex; row += size {
 		rowScore := 0
@@ -58,8 +60,9 @@ func horizontalWinner(size int, spaces []int) int {
 			rowScore += spaces[column]
 		}
 
-		if float64(size) == math.Abs(float64(rowScore)) {
-			winner = rowScore / size
+		winner = checkForWinner(size, rowScore)
+		if winner != 0 {
+			return winner
 		}
 	}
 	return winner

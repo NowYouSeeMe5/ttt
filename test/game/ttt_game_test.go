@@ -2,6 +2,7 @@ package game_test
 
 import (
 	"reflect"
+
 	. "ttt/src/board"
 	. "ttt/src/evaluator"
 	. "ttt/src/game"
@@ -10,6 +11,24 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
+
+type MockTttInput struct{}
+
+func (i MockTttInput) BoardSize() int      { return 3 }
+func (i MockTttInput) HowManyPlayers() int { return 0 }
+
+type MockTttOutput struct{}
+
+var finalBoard = []int{}
+var finalWinner = 8
+
+func (o *MockTttOutput) PrintBoard(spaces []int) {
+	finalBoard = spaces
+}
+
+func (o *MockTttOutput) PrintEndGameMessage(winner int) {
+	finalWinner = winner
+}
 
 var mockCurrentState = Finished
 var currentGameState = Setup
@@ -50,6 +69,9 @@ var _ = Describe("TttGame", func() {
 	tttGame.InjectPlayer(mockPlayGame)
 	tttGame.InjectEnd(mockEndGame)
 
+	humanType := reflect.TypeOf(new(HumanPlayer)).String()
+	aiType := reflect.TypeOf(new(AiPlayer)).String()
+
 	Describe("Play", func() {
 		It("Uses the gameSetup when the current state is Setup", func() {
 			startPlay(Setup)
@@ -82,11 +104,7 @@ var _ = Describe("TttGame", func() {
 		})
 	})
 
-	Describe("Setup", func() {
-
-		humanType := reflect.TypeOf(new(HumanPlayer)).String()
-		aiType := reflect.TypeOf(new(AiPlayer)).String()
-
+	Describe("Set up", func() {
 		It("Sets both players to ai when the players count is 0", func() {
 			tttGame.SetPlayers(0)
 
@@ -115,6 +133,16 @@ var _ = Describe("TttGame", func() {
 
 			Expect(humanType).To(Equal(player1Type))
 			Expect(humanType).To(Equal(player2Type))
+		})
+	})
+
+	Describe("Set board size", func() {
+		board := tttGame.Board
+		board.ResetBoard(10)
+
+		It("Sets the board to the passed in number squared", func() {
+			tttGame.SetBoardSize(3)
+			Expect(9).To(Equal(len(board.Spaces())))
 		})
 	})
 
@@ -167,6 +195,45 @@ var _ = Describe("TttGame", func() {
 
 			expectedBoard := []int{0, 1, 0, 0, 0, 0, 0, 0, 0}
 			Expect(expectedBoard).To(Equal(tttGame.Board.Spaces()))
+		})
+	})
+
+	Describe("Setup", func() {
+		It("Sets the board size", func() {
+			tttGame = NewTttGame(input, output, board, evaluator)
+
+			tttGame.Setup()
+			boardSize := len(tttGame.Board.Spaces())
+
+			Expect(9).To(Equal(boardSize))
+		})
+
+		It("Sets the players", func() {
+			player1Type := reflect.TypeOf(tttGame.Player1).String()
+			player2Type := reflect.TypeOf(tttGame.Player2).String()
+
+			Expect(aiType).To(Equal(player1Type))
+			Expect(aiType).To(Equal(player2Type))
+		})
+	})
+
+	Describe("Play game", func() {
+		It("Plays through a game when both players are ai", func() {
+			tttGame.PlayGame()
+
+			Expect(0).To(Equal(tttGame.Board.CurrentDepth()))
+		})
+	})
+
+	Describe("End", func() {
+		It("Uses the output to process the final board", func() {
+			tttGame.End()
+
+			Expect(tttGame.Board.Spaces()).To(Equal(finalBoard))
+		})
+
+		It("Uses the output to process the winner", func() {
+			Expect(0).To(Equal(finalWinner))
 		})
 	})
 })

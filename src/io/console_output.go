@@ -4,13 +4,12 @@ import (
 	"bytes"
 	"fmt"
 	"math"
-	. "ttt/src/board"
 )
 
 type TttOutput struct{}
 
 const (
-	BoardSizeQuestion      = "What size board would you like to play on? Enter 3 or higher"
+	BoardSizeQuestion      = "What size board would you like to play on? Enter 3, 4, or 5"
 	HowManyPlayersQuestion = "How many human players are you? Enter 0, 1, or 2"
 	ErrorMessage           = "Please enter the appropriate information"
 	PlayerVictory          = "Well done %s, congrats on your victory!!!"
@@ -30,13 +29,12 @@ func (t TttOutput) Print(message string) {
 	fmt.Println(message)
 }
 
-func (t TttOutput) PrintBoard(board Board) {
-	boardString := t.RenderBoard(board)
+func (t TttOutput) PrintBoard(spaces []int) {
+	boardString := t.RenderBoard(spaces)
 	t.Print(boardString)
 }
 
-func (t TttOutput) RenderBoard(board Board) string {
-	spaces := board.Spaces()
+func (t TttOutput) RenderBoard(spaces []int) string {
 	lines := renderLines(spaces)
 
 	return lines
@@ -48,14 +46,17 @@ func renderLines(spaces []int) string {
 
 	for y := 0; y < size; y++ {
 		currentY := y * size
-		buffer.WriteString(fmt.Sprintf(leftSpace, getPiece(spaces[currentY])))
+		buffer.WriteString(formatSpace(leftSpace, spaces, currentY))
 		for x := 1; x < size; x++ {
-			buffer.WriteString(fmt.Sprintf(space, getPiece(spaces[currentY+x])))
+			buffer.WriteString(formatSpace(space, spaces, currentY+x))
 		}
 		buffer.WriteString("\n")
 	}
-
 	return buffer.String()
+}
+
+func formatSpace(space string, spaces []int, index int) string {
+	return fmt.Sprintf(space, getPiece(spaces[index]))
 }
 
 func getPiece(squareState int) string {

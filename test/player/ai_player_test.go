@@ -14,7 +14,7 @@ var _ = Describe("AiPlayer", func() {
 		aiPlayer := new(AiPlayer)
 		board := new(TttBoard)
 
-		It("goes in the middle space when it has the chance to win", func() {
+		It("goes in space 4 when it has the chance to win", func() {
 			spaces := []int{
 				-1, 0, 1,
 				1, 0, 0,
@@ -23,22 +23,13 @@ var _ = Describe("AiPlayer", func() {
 			Expect(4).To(Equal(aiPlayer.Move(board)))
 		})
 
-		It("makes a move", func() {
-			spaces := []int{
-				1, 1, -1,
-				1, 0, 0,
-				0, 0, -1}
-			board.SetSpaces(spaces)
-			Expect(5).To(Equal(aiPlayer.Move(board)))
-		})
-
 		It("blocks on 4 when spaces 1 and 7 are taken", func() {
 			spaces := []int{
 				1, -1, 1,
-				0, -1, 0,
-				0, 0, 0}
+				0, 0, 0,
+				0, -1, 0}
 			board.SetSpaces(spaces)
-			Expect(7).To(Equal(aiPlayer.Move(board)))
+			Expect(4).To(Equal(aiPlayer.Move(board)))
 		})
 
 		It("blocks on 3 when there is an imminent win in a 4X4 game", func() {

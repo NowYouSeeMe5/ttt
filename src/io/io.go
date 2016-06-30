@@ -4,6 +4,12 @@ type Input interface {
 	AskQuestion(question string, expectedInput []int) int
 }
 
-type Output interface {
-	RenderBoard(spaces []int) string
+type GameInput interface {
+	BoardSize() int
+	HowManyPlayers() int
+}
+
+type GameOutput interface {
+	PrintBoard(spaces []int)
+	PrintEndGameMessage(winner int)
 }

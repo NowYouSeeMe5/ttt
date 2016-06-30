@@ -1,9 +1,10 @@
 package game
 
 import (
-	. "ttt/src/board"
-	. "ttt/src/evaluator"
-	. "ttt/src/player"
+	"ttt/src/board"
+	"ttt/src/evaluator"
+	"ttt/src/io"
+	"ttt/src/player"
 )
 
 const (
@@ -18,30 +19,28 @@ type GamePlayer func()
 type GameEnd func()
 
 type TttGame struct {
-	Board   Board
-	Player1 Player
-	Player2 Player
+	Board   board.Board
+	Player1 player.Player
+	Player2 player.Player
 
 	CurrentState string
 
-	Evaluator Evaluator
-	Input     TttInput
-	Output    TttOutput
+	Evaluator evaluator.Evaluator
+	Input     io.GameInput
+	Output    io.GameOutput
 
 	gameSetup  GameSetup
 	gamePlayer GamePlayer
 	gameEnd    GameEnd
 }
 
-func NewTttGame(input TttInput, output TttOutput, board Board, evaluator Evaluator) *TttGame {
+func NewTttGame(input io.GameInput, output io.GameOutput, board board.Board, evaluator evaluator.Evaluator) *TttGame {
 	TttGame := new(TttGame)
 
 	TttGame.Input = input
 	TttGame.Output = output
 	TttGame.Board = board
 	TttGame.Evaluator = evaluator
-
-	TttGame.Board.ResetBoard(3)
 
 	TttGame.gameSetup = TttGame.Setup
 	TttGame.gamePlayer = TttGame.PlayGame
@@ -69,27 +68,17 @@ func (t *TttGame) Play() {
 }
 
 func (t *TttGame) Setup() {
+	boardSize := t.Input.BoardSize()
 	players := t.Input.HowManyPlayers()
-	t.SetPlayers(players)
-}
 
-func (t *TttGame) SetPlayers(players int) {
-	if players == 0 {
-		t.Player1 = new(AiPlayer)
-		t.Player2 = new(AiPlayer)
-	} else if players == 1 {
-		t.Player1 = new(HumanPlayer)
-		t.Player2 = new(AiPlayer)
-	} else {
-		t.Player1 = new(HumanPlayer)
-		t.Player2 = new(HumanPlayer)
-	}
+	t.SetBoardSize(boardSize)
+	t.SetPlayers(players)
 }
 
 func (t *TttGame) PlayGame() {
 	board := t.Board
 	for !t.IsOver(board) {
-		t.Output.PrintBoard(t.Board)
+		t.printBoard()
 
 		whoseTurn := t.Board.WhoseTurn()
 		currentPlayer := t.GetPlayer(whoseTurn)
@@ -99,7 +88,40 @@ func (t *TttGame) PlayGame() {
 	}
 }
 
-func (t TttGame) IsOver(board Board) bool {
+func (t *TttGame) End() {
+	t.printBoard()
+	t.printWinner()
+}
+
+func (t TttGame) printBoard() {
+	spaces := t.Board.Spaces()
+	t.Output.PrintBoard(spaces)
+}
+
+func (t TttGame) printWinner() {
+	spaces := t.Board.Spaces()
+	winner := t.Evaluator.Winner(spaces)
+	t.Output.PrintEndGameMessage(winner)
+}
+
+func (t *TttGame) SetBoardSize(boardSize int) {
+	t.Board.ResetBoard(boardSize)
+}
+
+func (t *TttGame) SetPlayers(players int) {
+	if players == 0 {
+		t.Player1 = new(player.AiPlayer)
+		t.Player2 = new(player.AiPlayer)
+	} else if players == 1 {
+		t.Player1 = new(player.HumanPlayer)
+		t.Player2 = new(player.AiPlayer)
+	} else {
+		t.Player1 = new(player.HumanPlayer)
+		t.Player2 = new(player.HumanPlayer)
+	}
+}
+
+func (t TttGame) IsOver(board board.Board) bool {
 	spaces := board.Spaces()
 
 	winner := t.Evaluator.Winner(spaces)
@@ -108,7 +130,7 @@ func (t TttGame) IsOver(board Board) bool {
 	return winner != 0 || currentDepth == 0
 }
 
-func (t TttGame) GetPlayer(whoseTurn int) Player {
+func (t TttGame) GetPlayer(whoseTurn int) player.Player {
 	if whoseTurn == 1 {
 		return t.Player1
 	} else {
@@ -118,15 +140,6 @@ func (t TttGame) GetPlayer(whoseTurn int) Player {
 
 func (t *TttGame) MakeMove(currentPlayer int, position int) {
 	t.Board.MakeMove(currentPlayer, position)
-}
-
-func (t *TttGame) End() {
-	t.Output.PrintBoard(t.Board)
-
-	spaces := t.Board.Spaces()
-	winner := t.Evaluator.Winner(spaces)
-
-	t.Output.PrintEndGameMessage(winner)
 }
 
 func (t *TttGame) InjectSetup(gameSetup GameSetup) {

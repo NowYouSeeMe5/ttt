@@ -12,7 +12,7 @@ type TttInput struct {
 	errorHandler ErrorHandler
 }
 
-var expectedInputBoardSize = []int{3, 4, 5}
+var expectedInputBoardSize = []int{3, 4, 5, 6}
 var expectedInputHowManyPlayers = []int{0, 1, 2}
 var expectedInputWhichPlayer = []int{1, 2}
 

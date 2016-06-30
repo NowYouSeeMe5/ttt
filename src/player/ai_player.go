@@ -2,20 +2,21 @@ package player
 
 import (
 	"math"
-	. "ttt/src/board"
-	. "ttt/src/evaluator"
+
+	"ttt/src/board"
+	"ttt/src/evaluator"
 )
 
 type AiPlayer struct {
-	evaluator     Evaluator
+	evaluator     evaluator.Evaluator
 	aiPlayer      int
 	startingDepth int
 }
 
 var depthLimit = 8
 
-func (p *AiPlayer) Move(board Board) int {
-	p.evaluator = new(TttEvaluator)
+func (p *AiPlayer) Move(board board.Board) int {
+	p.evaluator = new(evaluator.TttEvaluator)
 	p.aiPlayer = board.WhoseTurn()
 
 	spaces := board.Spaces()
@@ -31,6 +32,7 @@ func (p *AiPlayer) Move(board Board) int {
 			nextBoard := copyBoard(spaces)
 			nextBoard[i] = p.aiPlayer
 			otherPlayer := otherPlayer(p.aiPlayer)
+
 			alphaBetaScores[i] = p.alphaBeta(nextBoard, depth-1, alpha, beta, otherPlayer)
 		}
 	}
@@ -52,8 +54,10 @@ func (p *AiPlayer) alphaBeta(spaces []int, depth int, alpha int, beta int, curre
 			if v == 0 {
 				nextBoard := copyBoard(spaces)
 				nextBoard[i] = currentPlayer
+
 				score = max(score, p.alphaBeta(nextBoard, depth-1, alpha, beta, otherPlayer))
 				alpha = max(alpha, score)
+
 				if alpha >= beta {
 					return alpha
 				}
@@ -66,8 +70,10 @@ func (p *AiPlayer) alphaBeta(spaces []int, depth int, alpha int, beta int, curre
 			if v == 0 {
 				nextBoard := copyBoard(spaces)
 				nextBoard[i] = currentPlayer
+
 				score = min(score, p.alphaBeta(nextBoard, depth-1, alpha, beta, otherPlayer))
 				beta = min(beta, score)
+
 				if beta <= alpha {
 					return beta
 				}
@@ -79,7 +85,9 @@ func (p *AiPlayer) alphaBeta(spaces []int, depth int, alpha int, beta int, curre
 
 func copyBoard(spaces []int) []int {
 	newBoard := make([]int, len(spaces))
+
 	copy(newBoard, spaces)
+
 	return newBoard
 }
 
@@ -115,6 +123,7 @@ func bestMove(scores map[int]int) int {
 			bestValue = v
 		}
 	}
+
 	return bestKey
 }
 
