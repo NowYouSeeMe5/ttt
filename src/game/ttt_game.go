@@ -110,11 +110,11 @@ func (t *TttGame) SetBoardSize(boardSize int) {
 
 func (t *TttGame) SetPlayers(players int) {
 	if players == 0 {
-		t.Player1 = new(player.AiPlayer)
-		t.Player2 = new(player.AiPlayer)
+		t.Player1 = player.NewAiPlayer(t.Evaluator)
+		t.Player2 = player.NewAiPlayer(t.Evaluator)
 	} else if players == 1 {
 		t.Player1 = new(player.HumanPlayer)
-		t.Player2 = new(player.AiPlayer)
+		t.Player2 = player.NewAiPlayer(t.Evaluator)
 	} else {
 		t.Player1 = new(player.HumanPlayer)
 		t.Player2 = new(player.HumanPlayer)

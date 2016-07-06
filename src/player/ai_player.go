@@ -15,6 +15,12 @@ type AiPlayer struct {
 
 var depthLimit = 8
 
+func NewAiPlayer(evaluator evaluator.Evaluator) *AiPlayer {
+	player := new(AiPlayer)
+	player.evaluator = evaluator
+	return player
+}
+
 func (p *AiPlayer) Move(board board.Board) int {
 	p.evaluator = new(evaluator.TttEvaluator)
 	p.aiPlayer = board.WhoseTurn()
