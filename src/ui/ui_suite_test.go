@@ -1,4 +1,4 @@
-package io_test
+package ui_test
 
 import (
 	. "github.com/onsi/ginkgo"
@@ -9,5 +9,5 @@ import (
 
 func TestIo(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Io Suite")
+	RunSpecs(t, "Ui Suite")
 }
