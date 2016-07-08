@@ -1,18 +1,29 @@
-package board_test
+package board
 
 import (
-	. "ttt/src/board"
-
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
 
+func setSpaces(spaces []int, board *TttBoard) {
+	for i, v := range spaces {
+		board.SetSpace(v, i)
+	}
+}
+
 var _ = Describe("TttBoard", func() {
 
 	n := 3
-	board := new(TttBoard)
-	board.ResetBoard(n)
-	spaces := board.Spaces()
+
+	var (
+		board  *TttBoard
+		spaces []int
+	)
+
+	BeforeEach(func() {
+		board = NewTttBoard(n)
+		spaces = board.Spaces()
+	})
 
 	Describe("New Board", func() {
 		It("Should be an array of size n-squared when given n", func() {
@@ -26,40 +37,47 @@ var _ = Describe("TttBoard", func() {
 		})
 	})
 
-	Describe("Current depth", func() {
-		It("returns the remaining number of zeroes left on a board", func() {
-			board.SetSpaces([]int{0, 1, 1, 1, -1, 1, -1, 0, 1})
-			Expect(2).To(Equal(board.CurrentDepth()))
+	Describe("Set Space", func() {
+		It("sets a space with the given marker at the given position", func() {
+			newSpaces := []int{0, 0, 1, 0, 0, -1, 1, 1, -1}
+
+			setSpaces(newSpaces, board)
+			board.SetSpace(1, 3)
+
+			Expect(1).To(Equal(spaces[3]))
 		})
 	})
 
-	Describe("Make move", func() {
-		It("returns a board with the player's number in the appropriate space", func() {
-			board.ResetBoard(3)
-			board.MakeMove(1, 3)
-			spaces := board.Spaces()
-			Expect(1).To(Equal(spaces[3]))
+	Describe("Size", func() {
+		It("returns the 1 dimensional size of a 3X3 board", func() {
+			Expect(n).To(Equal(board.Size()))
+		})
+
+		It("returns the 1 dimensional size of a 4X4 board", func() {
+			board = NewTttBoard(4)
+
+			Expect(4).To(Equal(board.Size()))
 		})
 	})
 
 	Describe("Whose turn", func() {
 		It("returns 1 when the board adds up to 0", func() {
-			spaces := []int{0, 0, 1, -1, 0, -1, 1, 1, -1}
-			board.SetSpaces(spaces)
+			newSpaces := []int{0, 0, 1, -1, 0, -1, 1, 1, -1}
+			setSpaces(newSpaces, board)
 			Expect(1).To(Equal(board.WhoseTurn()))
 		})
 
 		It("returns -1 when the board adds up to 1", func() {
-			spaces := []int{0, 0, 1, 1, 0, 1, 0, -1, 0}
-			board.SetSpaces(spaces)
+			newSpaces := []int{0, 0, 1, 1, 0, 1, 0, -1, 0}
+			setSpaces(newSpaces, board)
 			Expect(-1).To(Equal(board.WhoseTurn()))
 		})
 	})
 
 	Describe("Possible moves", func() {
 		It("returns a slice containing the possible moves on a board", func() {
-			spaces := []int{0, 0, 0, 1, 0, -1, 0, -1, 0}
-			board.SetSpaces(spaces)
+			newSpaces := []int{0, 0, 0, 1, 0, -1, 0, -1, 0}
+			setSpaces(newSpaces, board)
 			Expect([]int{1, 2, 3, 5, 7, 9}).To(Equal(board.PossibleMoves()))
 		})
 	})

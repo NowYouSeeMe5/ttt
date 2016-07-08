@@ -1,16 +1,30 @@
 package board
 
+import "math"
+
 type TttBoard struct {
 	spaces []int
 }
 
-func (t *TttBoard) MakeMove(playerPosition int, moveSpace int) {
-	t.spaces[moveSpace] = playerPosition
+func NewTttBoard(size int) *TttBoard {
+	tttBoard := new(TttBoard)
+	tttBoard.initializeBoard(size)
+
+	return tttBoard
 }
 
-func (t *TttBoard) ResetBoard(size int) {
+func (t *TttBoard) initializeBoard(size int) {
 	var spaces = size * size
 	t.spaces = make([]int, spaces)
+}
+
+func (t TttBoard) Size() int {
+	squares := float64(len(t.spaces))
+	return int(math.Sqrt(squares))
+}
+
+func (t *TttBoard) SetSpace(playerPosition int, moveSpace int) {
+	t.spaces[moveSpace] = playerPosition
 }
 
 func (t TttBoard) CurrentDepth() int {
@@ -37,10 +51,6 @@ func (t TttBoard) PossibleMoves() []int {
 
 func (t TttBoard) Spaces() []int {
 	return t.spaces
-}
-
-func (t *TttBoard) SetSpaces(spaces []int) {
-	t.spaces = spaces
 }
 
 func (t TttBoard) WhoseTurn() int {

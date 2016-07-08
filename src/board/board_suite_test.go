@@ -1,4 +1,4 @@
-package board_test
+package board
 
 import (
 	. "github.com/onsi/ginkgo"
