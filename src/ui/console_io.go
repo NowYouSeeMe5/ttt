@@ -12,5 +12,5 @@ func (c ConsoleIO) GetInput() string {
 }
 
 func (c ConsoleIO) Print(message string) {
-	fmt.Println(message)
+	fmt.Print(message)
 }

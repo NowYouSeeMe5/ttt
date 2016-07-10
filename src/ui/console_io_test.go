@@ -54,7 +54,7 @@ var _ = Describe("ConsoleIO", func() {
 	})
 
 	Describe("Print", func() {
-		It("Print output to stdout", func() {
+		It("Print output to stdout with a new line", func() {
 			printFunction := func(s string) { consoleIO.Print(s) }
 			printedString := writeMockOutput(testString, printFunction)
 
