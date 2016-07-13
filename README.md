@@ -1,57 +1,21 @@
 # ttt
 tic-tac-toe implemented in the style of Go
 
-Let me apologize in advance for the following steps, welcome to Go.
+# Install Go
 
-Go Instructions:
+Install [Go](https://golang.org/doc/install) making sure the appropriate paths are set for the [Go command](https://golang.org/doc/articles/go_command.html) to work properly.
 
-  Homebrew is the easiest way to install go: `brew install go`
+# Running the project
 
-  If you already have a workspace setup you can clone the project and skip these steps.
+Use `go get github.com/NowYouSeeMe5/ttt` to retrieve the project.
+Now just run `ttt` to play a game of tic-tac-toe.
 
-  It you don't have go there are several setup steps, this should work with a copy paste once you have go:
-  
-  ```
-    mkdir ~/Desktop/go
-    mkdir ~/Desktop/go/bin
-    mkdir ~/Desktop/go/src
-    mkdir ~/Desktop/go/pkg
+#Testing the project
 
-    cd ~/Desktop/go/src
+Grab [ginkgo](https://github.com/onsi/ginkgo) and [gomega](https://github.com/onsi/gomega) with `go get`:
 
-    git clone https://github.com/NowYouSeeMe5/ttt.git
+```go get github.com/onsi/ginkgo/ginkgo
 
-    export GOPATH="$HOME/Desktop/go"
-    export PATH="$PATH:$GOPATH/bin"
-    export PATH="/usr/local/bin:$PATH"
-    
-    cd ~/Desktop/go/src/ttt
-    
-  
-  ```
-
-Build and Run Instructions:
-
-From there you can build an executable using `go build` and run that executable with `./ttt`
-
-Test Instructions:
-
-Testing requires [ginkgo](https://github.com/onsi/ginkgo) and [gomega](https://github.com/onsi/gomega)
-
-Grab these with 
-```
-go get github.com/onsi/ginkgo/ginkgo
-go get github.com/onsi/gomega
-```
-
-Grab these and run the specs using `ginkgo -r`
-
-You can run individual specs in each of the package folders by navigating to them and running `ginkgo`
-
-Deletion Instructions:
-
-```
-rm -rf ~/Desktop/go
-brew uninstall go
-```
-
+   go get github.com/onsi/gomega```
+   
+Navigate to the ttt folder and run `ginkgo -r` to run the entire suite or navigate to each package and run `ginkgo` to test them individually.
