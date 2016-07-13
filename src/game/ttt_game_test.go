@@ -1,14 +1,14 @@
-package game_test
+package game
 
 import (
 	"reflect"
 
-	. "ttt/src/board"
-	. "ttt/src/evaluator"
-	. "ttt/src/game"
-	. "ttt/src/player"
-	. "ttt/src/ui"
-	. "ttt/src/util"
+	. "github.com/NowYouSeeMe5/ttt/src/board"
+	. "github.com/NowYouSeeMe5/ttt/src/evaluator"
+	. "github.com/NowYouSeeMe5/ttt/src/game"
+	. "github.com/NowYouSeeMe5/ttt/src/player"
+	. "github.com/NowYouSeeMe5/ttt/src/ui"
+	. "github.com/NowYouSeeMe5/ttt/src/util"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

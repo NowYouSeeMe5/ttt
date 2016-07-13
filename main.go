@@ -1,8 +1,8 @@
 package main
 
 import (
-	"ttt/src/game"
-	"ttt/src/ui"
+	"github.com/NowYouSeeMe5/ttt/src/game"
+	"github.com/NowYouSeeMe5/ttt/src/ui"
 )
 
 func main() {

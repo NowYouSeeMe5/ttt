@@ -3,8 +3,8 @@ package player
 import (
 	"math"
 
-	"ttt/src/board"
-	"ttt/src/evaluator"
+	"github.com/NowYouSeeMe5/ttt/src/board"
+	"github.com/NowYouSeeMe5/ttt/src/evaluator"
 )
 
 type AiPlayer struct {

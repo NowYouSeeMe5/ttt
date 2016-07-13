@@ -3,7 +3,7 @@ package util
 import (
 	"strings"
 
-	. "ttt/src/board"
+	. "github.com/NowYouSeeMe5/ttt/src/board"
 )
 
 type MockIO struct {

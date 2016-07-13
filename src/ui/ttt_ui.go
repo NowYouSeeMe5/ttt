@@ -1,10 +1,11 @@
 package ui
 
 import (
+	"github.com/NowYouSeeMe5/ttt/src/board"
+
 	"bytes"
 	"fmt"
 	"strconv"
-	"ttt/src/board"
 )
 
 const (

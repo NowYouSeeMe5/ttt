@@ -1,7 +1,7 @@
 package player
 
 import (
-	"ttt/src/board"
+	"github.com/NowYouSeeMe5/ttt/src/board"
 )
 
 type Player interface {

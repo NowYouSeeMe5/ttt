@@ -1,8 +1,8 @@
 package evaluator
 
 import (
+	"github.com/NowYouSeeMe5/ttt/src/board"
 	"math"
-	"ttt/src/board"
 )
 
 type TttEvaluator struct{}

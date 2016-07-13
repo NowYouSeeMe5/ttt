@@ -1,8 +1,8 @@
 package player
 
 import (
-	"ttt/src/board"
-	"ttt/src/ui"
+	"github.com/NowYouSeeMe5/ttt/src/board"
+	"github.com/NowYouSeeMe5/ttt/src/ui"
 )
 
 var humanReadabilityPadding = 1

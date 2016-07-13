@@ -2,8 +2,8 @@ package ui
 
 import (
 	"fmt"
-	. "ttt/src/board"
-	. "ttt/src/util"
+	. "github.com/NowYouSeeMe5/ttt/src/board"
+	. "github.com/NowYouSeeMe5/ttt/src/util"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

@@ -1,10 +1,10 @@
 package game
 
 import (
-	"ttt/src/board"
-	"ttt/src/evaluator"
-	"ttt/src/player"
-	"ttt/src/ui"
+	"github.com/NowYouSeeMe5/ttt/src/board"
+	"github.com/NowYouSeeMe5/ttt/src/evaluator"
+	"github.com/NowYouSeeMe5/ttt/src/player"
+	"github.com/NowYouSeeMe5/ttt/src/ui"
 )
 
 type TttGame struct {
