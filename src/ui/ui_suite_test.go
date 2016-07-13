@@ -1,4 +1,4 @@
-package game_test
+package ui
 
 import (
 	. "github.com/onsi/ginkgo"
@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestGame(t *testing.T) {
+func TestIo(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Game Suite")
+	RunSpecs(t, "Ui Suite")
 }

@@ -1,4 +1,4 @@
-package player_test
+package evaluator
 
 import (
 	. "github.com/onsi/ginkgo"
@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestPlayer(t *testing.T) {
+func TestEvaluator(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Player Suite")
+	RunSpecs(t, "Evaluator Suite")
 }

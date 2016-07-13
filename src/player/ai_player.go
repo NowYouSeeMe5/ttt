@@ -8,22 +8,22 @@ import (
 )
 
 type AiPlayer struct {
-	evaluator     evaluator.Evaluator
 	aiPlayer      int
 	startingDepth int
+	evaluator     *evaluator.TttEvaluator
 }
 
 var depthLimit = 8
 
-func NewAiPlayer(evaluator evaluator.Evaluator) *AiPlayer {
+func NewAiPlayer() *AiPlayer {
 	player := new(AiPlayer)
-	player.evaluator = evaluator
+	player.evaluator = new(evaluator.TttEvaluator)
+
 	return player
 }
 
-func (p *AiPlayer) Move(board board.Board) int {
-	p.evaluator = new(evaluator.TttEvaluator)
-	p.aiPlayer = board.WhoseTurn()
+func (p *AiPlayer) Move(board *board.TttBoard) int {
+	p.aiPlayer = p.evaluator.WhoseTurn(board)
 
 	spaces := board.Spaces()
 	depth := board.CurrentDepth()
@@ -35,8 +35,8 @@ func (p *AiPlayer) Move(board board.Board) int {
 
 	for i, v := range spaces {
 		if v == 0 {
-			nextBoard := copyBoard(spaces)
-			nextBoard[i] = p.aiPlayer
+			nextBoard := board.Copy()
+			nextBoard.SetSpace(p.aiPlayer, i)
 			otherPlayer := otherPlayer(p.aiPlayer)
 
 			alphaBetaScores[i] = p.alphaBeta(nextBoard, depth-1, alpha, beta, otherPlayer)
@@ -46,8 +46,9 @@ func (p *AiPlayer) Move(board board.Board) int {
 	return bestMove(alphaBetaScores)
 }
 
-func (p *AiPlayer) alphaBeta(spaces []int, depth int, alpha int, beta int, currentPlayer int) int {
-	winner := p.evaluator.Winner(spaces)
+func (p *AiPlayer) alphaBeta(board *board.TttBoard, depth int, alpha int, beta int, currentPlayer int) int {
+	spaces := board.Spaces()
+	winner := p.evaluator.Winner(board)
 	otherPlayer := otherPlayer(currentPlayer)
 
 	if depth == 0 || winner != 0 || p.startingDepth-depth >= depthLimit {
@@ -58,8 +59,8 @@ func (p *AiPlayer) alphaBeta(spaces []int, depth int, alpha int, beta int, curre
 		score := -1000
 		for i, v := range spaces {
 			if v == 0 {
-				nextBoard := copyBoard(spaces)
-				nextBoard[i] = currentPlayer
+				nextBoard := board.Copy()
+				nextBoard.SetSpace(currentPlayer, i)
 
 				score = max(score, p.alphaBeta(nextBoard, depth-1, alpha, beta, otherPlayer))
 				alpha = max(alpha, score)
@@ -74,8 +75,8 @@ func (p *AiPlayer) alphaBeta(spaces []int, depth int, alpha int, beta int, curre
 		score := 1000
 		for i, v := range spaces {
 			if v == 0 {
-				nextBoard := copyBoard(spaces)
-				nextBoard[i] = currentPlayer
+				nextBoard := board.Copy()
+				nextBoard.SetSpace(currentPlayer, i)
 
 				score = min(score, p.alphaBeta(nextBoard, depth-1, alpha, beta, otherPlayer))
 				beta = min(beta, score)
@@ -87,14 +88,6 @@ func (p *AiPlayer) alphaBeta(spaces []int, depth int, alpha int, beta int, curre
 		}
 		return score
 	}
-}
-
-func copyBoard(spaces []int) []int {
-	newBoard := make([]int, len(spaces))
-
-	copy(newBoard, spaces)
-
-	return newBoard
 }
 
 func (p AiPlayer) score(winner int) int {

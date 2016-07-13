@@ -1,17 +1,37 @@
 package evaluator
 
-import "math"
-
-const (
-	P1 = 1
-	P2 = -1
-	E  = 0
+import (
+	"math"
+	"ttt/src/board"
 )
 
 type TttEvaluator struct{}
 
-func (t TttEvaluator) Winner(spaces []int) int {
-	size := size(spaces)
+func (t TttEvaluator) IsOver(board *board.TttBoard) bool {
+	winner := t.Winner(board)
+	currentDepth := board.CurrentDepth()
+
+	return winner != 0 || currentDepth == 0
+}
+
+func (t TttEvaluator) WhoseTurn(board *board.TttBoard) int {
+	spaces := board.Spaces()
+
+	total := 0
+
+	for i := range spaces {
+		total += spaces[i]
+	}
+
+	if total == 0 {
+		return 1
+	}
+	return -1
+}
+
+func (t TttEvaluator) Winner(board *board.TttBoard) int {
+	spaces := board.Spaces()
+	size := board.Size()
 
 	verticalWinner := verticalWinner(size, spaces)
 	horizontalWinner := horizontalWinner(size, spaces)
@@ -33,7 +53,7 @@ func decideWinner(winners []int) int {
 }
 
 func verticalWinner(size int, spaces []int) int {
-	winner := E
+	winner := 0
 
 	for column := 0; column < size; column++ {
 		verticalScore := 0
@@ -51,7 +71,7 @@ func verticalWinner(size int, spaces []int) int {
 }
 
 func horizontalWinner(size int, spaces []int) int {
-	winner := E
+	winner := 0
 
 	lastIndex := size * (size - 1)
 	for row := 0; row <= lastIndex; row += size {
@@ -69,7 +89,7 @@ func horizontalWinner(size int, spaces []int) int {
 }
 
 func diagonalLeftRightWinner(size int, spaces []int) int {
-	winner := E
+	winner := 0
 
 	diagonalScore := 0
 	for i := 0; i < size*size; i += (size + 1) {
@@ -82,7 +102,7 @@ func diagonalLeftRightWinner(size int, spaces []int) int {
 }
 
 func diagonalRightLeftWinner(size int, spaces []int) int {
-	winner := E
+	winner := 0
 
 	diagonalScore := 0
 	for i := size - 1; i <= size*size-(size-1); i += (size - 1) {
@@ -95,16 +115,11 @@ func diagonalRightLeftWinner(size int, spaces []int) int {
 }
 
 func checkForWinner(size int, score int) int {
-	winner := E
+	winner := 0
 
 	if float64(size) == math.Abs(float64(score)) {
 		winner = score / size
 	}
 
 	return winner
-}
-
-func size(spaces []int) int {
-	squares := float64(len(spaces))
-	return int(math.Sqrt(squares))
 }

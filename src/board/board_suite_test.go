@@ -1,4 +1,4 @@
-package io_test
+package board
 
 import (
 	. "github.com/onsi/ginkgo"
@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestIo(t *testing.T) {
+func TestBoard(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Io Suite")
+	RunSpecs(t, "Board Suite")
 }

@@ -1,4 +1,4 @@
-package board_test
+package player
 
 import (
 	. "github.com/onsi/ginkgo"
@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestBoard(t *testing.T) {
+func TestPlayer(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Board Suite")
+	RunSpecs(t, "Player Suite")
 }
