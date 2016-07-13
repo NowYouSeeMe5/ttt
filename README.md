@@ -14,8 +14,10 @@ Now just run `ttt` to play a game of tic-tac-toe.
 
 Grab [ginkgo](https://github.com/onsi/ginkgo) and [gomega](https://github.com/onsi/gomega) with `go get`:
 
-```go get github.com/onsi/ginkgo/ginkgo
+```
+go get github.com/onsi/ginkgo/ginkgo 
 
-   go get github.com/onsi/gomega```
+go get github.com/onsi/gomega
+```
    
 Navigate to the ttt folder and run `ginkgo -r` to run the entire suite or navigate to each package and run `ginkgo` to test them individually.
