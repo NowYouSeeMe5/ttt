@@ -6,7 +6,7 @@ type ConsoleIO struct{}
 
 func (c ConsoleIO) GetInput() string {
 	var input string
-	fmt.Scanf("%s", &input)
+	fmt.Scanln(&input)
 
 	return input
 }

@@ -1,4 +1,4 @@
-package ui_test
+package ui
 
 import (
 	. "github.com/onsi/ginkgo"

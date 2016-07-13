@@ -1,11 +1,9 @@
-package ui_test
+package ui
 
 import (
 	"bytes"
 	"io"
 	"os"
-
-	. "ttt/src/ui"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

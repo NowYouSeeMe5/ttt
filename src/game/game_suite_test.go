@@ -1,4 +1,4 @@
-package game_test
+package game
 
 import (
 	. "github.com/onsi/ginkgo"

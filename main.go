@@ -1,17 +1,12 @@
 package main
 
 import (
-	"ttt/src/board"
-	"ttt/src/evaluator"
 	"ttt/src/game"
-	"ttt/src/io"
+	"ttt/src/ui"
 )
 
 func main() {
-	board := new(board.TttBoard)
-	evaluator := new(evaluator.TttEvaluator)
-	input := io.NewTttInput()
-	output := new(io.TttOutput)
+	io := new(ui.ConsoleIO)
 
-	game.NewTttGame(input, output, board, evaluator).Play()
+	game.NewTttGame(io).Play()
 }

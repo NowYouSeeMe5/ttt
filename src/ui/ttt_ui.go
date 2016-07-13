@@ -8,12 +8,12 @@ import (
 )
 
 const (
-	BoardSizeQuestion      = "Choose a board size from the following: %d"
-	HowManyPlayersQuestion = "How many human players are you? Choose from the following: %d"
-	ErrorMessage           = "That input was incorrect.\nPlease choose from the following: %d"
-	PlayerVictory          = "Well done %s, congrats on your victory!!!"
-	TieGame                = "That's a nice Tie!!!"
-	GetMove                = "Please select a move from the following: %d"
+	BoardSizeQuestion      = "Choose a board size from the following: %d\n"
+	HowManyPlayersQuestion = "How many human players are you? Choose from the following: %d\n"
+	ErrorMessage           = "That input was incorrect.\n"
+	PlayerVictory          = "Well done %s, congrats on your victory!!!\n"
+	TieGame                = "That's a nice Tie!!!\n"
+	GetMove                = "Please select a move from the following: %d\n"
 
 	leftSpace = "%s"
 	space     = "|%s"
@@ -57,6 +57,7 @@ func renderBoard(board *board.TttBoard) string {
 		}
 		buffer.WriteString("\n")
 	}
+	buffer.WriteString("\n")
 	return buffer.String()
 }
 
@@ -89,9 +90,8 @@ func (u TttUI) GetBoardSize(availableSizes []int) int {
 	return u.prompt(BoardSizeQuestion, availableSizes)
 }
 
-func (u TttUI) GetNumberOfPlayers() int {
-	validInput := []int{0, 1, 2}
-	return u.prompt(HowManyPlayersQuestion, validInput)
+func (u TttUI) GetNumberOfPlayers(availablePlayers []int) int {
+	return u.prompt(HowManyPlayersQuestion, availablePlayers)
 }
 
 func (u TttUI) prompt(message string, validInput []int) int {
@@ -100,20 +100,9 @@ func (u TttUI) prompt(message string, validInput []int) int {
 
 	response, _ := strconv.Atoi(u.io.GetInput())
 
-	if !u.checkInput(response, validInput) {
+	if !u.validator.Validate(response, validInput) {
 		u.prompt(message, validInput)
 	}
 
 	return response
-}
-
-func (u TttUI) checkInput(response int, validInput []int) bool {
-	if u.validator.Validate(response, validInput) {
-		return true
-	}
-
-	errorMessage := fmt.Sprintf(ErrorMessage, validInput)
-	u.io.Print(errorMessage)
-
-	return false
 }

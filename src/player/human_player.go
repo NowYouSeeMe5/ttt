@@ -1,32 +1,37 @@
 package player
 
 import (
-	"fmt"
-
 	"ttt/src/board"
-	"ttt/src/io"
+	"ttt/src/ui"
 )
 
-type HumanPlayer struct{}
+var humanReadabilityPadding = 1
 
-var Question = "Please select a move from 1-%d"
-
-func (h *HumanPlayer) Move(board board.Board) int {
-	question := FormQuestion(board)
-	possibleMoves := board.PossibleMoves()
-
-	tttInput := io.NewTttInput()
-
-	return GetInput(question, possibleMoves, tttInput)
+type HumanPlayer struct {
+	ui *ui.TttUI
 }
 
-func GetInput(question string, possibleMoves []int, input io.Input) int {
-	return input.AskQuestion(question, possibleMoves) - 1
+func NewHumanPlayer(ui *ui.TttUI) *HumanPlayer {
+	newPlayer := new(HumanPlayer)
+	newPlayer.ui = ui
+
+	return newPlayer
 }
 
-func FormQuestion(board board.Board) string {
+func (h *HumanPlayer) Move(board *board.TttBoard) int {
+	possibleMoves := possibleMoves(board)
+
+	return h.ui.GetMove(possibleMoves) - humanReadabilityPadding
+}
+
+func possibleMoves(board *board.TttBoard) []int {
+	var moves []int
 	spaces := board.Spaces()
-	size := len(spaces)
 
-	return fmt.Sprintf(Question, size)
+	for i, v := range spaces {
+		if v == 0 {
+			moves = append(moves, i+humanReadabilityPadding)
+		}
+	}
+	return moves
 }

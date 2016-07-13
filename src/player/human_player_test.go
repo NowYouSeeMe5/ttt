@@ -1,49 +1,39 @@
-package player_test
+package player
 
 import (
 	"fmt"
 
 	. "ttt/src/board"
-	. "ttt/src/io"
-	. "ttt/src/player"
+	. "ttt/src/ui"
+	. "ttt/src/util"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
 
-func mockPrompter(message string) interface{} {
-	return message
-}
-
-func mockInputGetter() int {
-	return 2
-}
-
-func mockErrorHandler(expectedResults []int, result interface{}) bool {
-	return true
-}
-
 var _ = Describe("HumanPlayer", func() {
 
-	tttInput := NewTttInput()
-	tttInput.InjectPrompter(mockPrompter)
-	tttInput.InjectErrorHandler(mockErrorHandler)
-	tttInput.InjectGetter(mockInputGetter)
+	mockIO := new(MockIO)
+	tttInput := NewTttUI(mockIO)
+	player := NewHumanPlayer(tttInput)
 
-	board := new(TttBoard)
-	spaces := []int{0, 1, 1, 1, -1, 1, -1, 0, 1}
-	board.SetSpaces(spaces)
+	board := NewTttBoard(3)
 
-	Describe("Form question", func() {
-		It("Forms a question out of the size of a board", func() {
-			expectedQuestion := fmt.Sprintf(Question, 9)
-			Expect(expectedQuestion).To(Equal(FormQuestion(board)))
+	Describe("Move", func() {
+		It("Subtracts one from the input returned from the human user", func() {
+			Expect(0).To(Equal(player.Move(board)))
 		})
 	})
 
-	Describe("Get input", func() {
-		It("Subtracts one from the input returned from the human user", func() {
-			Expect(1).To(Equal(GetInput("test", []int{}, tttInput)))
+	Describe("Possible moves", func() {
+		It("returns a slice containing the possible moves on a board", func() {
+			newSpaces := []int{0, 0, 0, 1, 0, -1, 0, -1, 0}
+			SetSpaces(newSpaces, board)
+
+			expectedQuestion := fmt.Sprintf(GetMove, []int{1, 2, 3, 5, 7, 9})
+			player.Move(board)
+
+			Expect(expectedQuestion).To(Equal(mockIO.PrintedString))
 		})
 	})
 })

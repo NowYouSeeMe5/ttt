@@ -1,4 +1,4 @@
-package player_test
+package player
 
 import (
 	. "github.com/onsi/ginkgo"

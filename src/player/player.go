@@ -5,5 +5,5 @@ import (
 )
 
 type Player interface {
-	Move(board board.Board) int
+	Move(board *board.TttBoard) int
 }

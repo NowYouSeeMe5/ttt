@@ -5,12 +5,6 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-func setSpaces(spaces []int, board *TttBoard) {
-	for i, v := range spaces {
-		board.SetSpace(v, i)
-	}
-}
-
 var _ = Describe("TttBoard", func() {
 
 	n := 3
@@ -39,9 +33,6 @@ var _ = Describe("TttBoard", func() {
 
 	Describe("Set Space", func() {
 		It("sets a space with the given marker at the given position", func() {
-			newSpaces := []int{0, 0, 1, 0, 0, -1, 1, 1, -1}
-
-			setSpaces(newSpaces, board)
 			board.SetSpace(1, 3)
 
 			Expect(1).To(Equal(spaces[3]))
@@ -60,25 +51,15 @@ var _ = Describe("TttBoard", func() {
 		})
 	})
 
-	Describe("Whose turn", func() {
-		It("returns 1 when the board adds up to 0", func() {
-			newSpaces := []int{0, 0, 1, -1, 0, -1, 1, 1, -1}
-			setSpaces(newSpaces, board)
-			Expect(1).To(Equal(board.WhoseTurn()))
-		})
+	Describe("Copy", func() {
+		It("returns a new TttBoard with the same spaces and different addresses", func() {
+			board = NewTttBoard(3)
+			board.SetSpace(1, 8)
 
-		It("returns -1 when the board adds up to 1", func() {
-			newSpaces := []int{0, 0, 1, 1, 0, 1, 0, -1, 0}
-			setSpaces(newSpaces, board)
-			Expect(-1).To(Equal(board.WhoseTurn()))
-		})
-	})
+			copy := board.Copy()
 
-	Describe("Possible moves", func() {
-		It("returns a slice containing the possible moves on a board", func() {
-			newSpaces := []int{0, 0, 0, 1, 0, -1, 0, -1, 0}
-			setSpaces(newSpaces, board)
-			Expect([]int{1, 2, 3, 5, 7, 9}).To(Equal(board.PossibleMoves()))
+			Expect(board.Spaces()).To(Equal(copy.Spaces()))
+			Expect(&board).To(Not(Equal(copy)))
 		})
 	})
 })
