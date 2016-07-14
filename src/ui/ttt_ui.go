@@ -99,10 +99,10 @@ func (u TttUI) prompt(message string, validInput []int) int {
 	question := fmt.Sprintf(message, validInput)
 	u.io.Print(question)
 
-	response, _ := strconv.Atoi(u.io.GetInput())
+	response, err := strconv.Atoi(u.io.GetInput())
 
-	if !u.validator.Validate(response, validInput) {
-		u.prompt(message, validInput)
+	if !u.validator.Validate(response, validInput) || err != nil {
+		response = u.prompt(message, validInput)
 	}
 
 	return response

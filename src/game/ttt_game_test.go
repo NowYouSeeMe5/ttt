@@ -3,9 +3,6 @@ package game
 import (
 	"reflect"
 
-	. "github.com/NowYouSeeMe5/ttt/src/board"
-	. "github.com/NowYouSeeMe5/ttt/src/evaluator"
-	. "github.com/NowYouSeeMe5/ttt/src/game"
 	. "github.com/NowYouSeeMe5/ttt/src/player"
 	. "github.com/NowYouSeeMe5/ttt/src/ui"
 	. "github.com/NowYouSeeMe5/ttt/src/util"
@@ -14,13 +11,11 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-var mockIO = new(MockGameIO)
-var ui = NewTttUI(mockIO)
-var board = NewTttBoard(3)
-
-var tttGame = NewTttGame(mockIO)
-
 var _ = Describe("TttGame", func() {
+
+	mockIO := new(MockGameIO)
+
+	var tttGame = NewTttGame(mockIO)
 
 	humanType := reflect.TypeOf(new(HumanPlayer)).String()
 	aiType := reflect.TypeOf(new(AiPlayer)).String()
